@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using RythuMitraAI.Application.Extensions;
 using RythuMitraAI.Infrastructure.Extensions;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,8 +44,39 @@ if (!string.IsNullOrEmpty(jwtKey))
     });
 }
 
+builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    // JWT Bearer configuration for Swagger
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter 'Bearer {token}' to authenticate"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -61,6 +93,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllers();
 
 app.MapGet("/", () => Results.Ok("RythuMitraAI API is running."));
 
