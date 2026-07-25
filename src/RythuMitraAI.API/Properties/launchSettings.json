@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "RythuMitraAI.API": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:57544;http://localhost:57545"
+    }
+  }
+}

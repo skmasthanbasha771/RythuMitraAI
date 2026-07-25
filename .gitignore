@@ -1,0 +1,39 @@
+# Visual Studio
+.vs/
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+
+# Logs
+*.log
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# Node
+node_modules/
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Packages
+packages/
+
+# Test Results
+TestResults/
+
+# Coverage
+coverage/
+
+# Publish
+publish/
+
+# Environment
+.env
