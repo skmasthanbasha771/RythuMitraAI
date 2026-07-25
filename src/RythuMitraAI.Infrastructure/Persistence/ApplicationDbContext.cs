@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RythuMitraAI.Domain.Common;
+using RythuMitraAI.Domain.Entities;
 
 namespace RythuMitraAI.Infrastructure.Persistence;
 
@@ -9,8 +10,11 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    // Example: expose DbSets for derived entity types in your Infrastructure layer
-    // public DbSet<YourEntity> YourEntities { get; set; }
+    // DbSets for entity types
+    public DbSet<User> Users => Set<User>();
+
+    // Example: expose DbSets for other entity types in your Infrastructure layer
+    // public DbSet<YourEntity> YourEntities => Set<YourEntity>();
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
@@ -21,6 +25,8 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        // Configure shared mappings or apply configurations from assembly
+
+        // Apply all IEntityTypeConfiguration implementations from this assembly
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
 }
