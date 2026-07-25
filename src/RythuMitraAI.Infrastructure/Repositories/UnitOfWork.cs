@@ -1,4 +1,5 @@
 using RythuMitraAI.Application.Interfaces;
+using RythuMitraAI.Infrastructure.Persistence;
 
 namespace RythuMitraAI.Infrastructure.Repositories;
 

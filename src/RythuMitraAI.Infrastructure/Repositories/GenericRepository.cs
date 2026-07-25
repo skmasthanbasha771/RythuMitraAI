@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using RythuMitraAI.Infrastructure.Persistence;
 using RythuMitraAI.Application.Interfaces;
 using RythuMitraAI.Domain.Common;
 

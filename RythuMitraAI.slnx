@@ -1,3 +1,7 @@
 <Solution>
-  <Project Path="RythuMitraAI/RythuMitraAI.csproj" />
+  <Project Path="src/RythuMitraAI.API/RythuMitraAI.API.csproj" />
+  <Project Path="src/RythuMitraAI.Application/RythuMitraAI.Application.csproj" />
+  <Project Path="src/RythuMitraAI.Domain/RythuMitraAI.Domain.csproj" />
+  <Project Path="src/RythuMitraAI.Infrastructure/RythuMitraAI.Infrastructure.csproj" />
+  <Project Path="src/RythuMitraAI.Tests/RythuMitraAI.Tests.csproj" />
 </Solution>

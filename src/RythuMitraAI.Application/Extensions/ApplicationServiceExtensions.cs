@@ -1,6 +1,4 @@
 using AutoMapper;
-using FluentValidation;
-using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace RythuMitraAI.Application.Extensions;
@@ -11,8 +9,7 @@ public static class ApplicationServiceExtensions
     {
         services.AddAutoMapper(typeof(Common.Mapping.MappingProfile));
 
-        // Register FluentValidation validators from this assembly. The API project should call AddControllers()/AddFluentValidation()
-        services.AddValidatorsFromAssembly(typeof(Common.Mapping.MappingProfile).Assembly);
+        // Register validators in the API project using FluentValidation.AspNetCore (keep Application free of Web dependencies)
 
         // Register other application services, validators, handlers here
 
