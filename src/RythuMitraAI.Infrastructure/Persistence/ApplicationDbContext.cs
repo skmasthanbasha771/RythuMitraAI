@@ -13,6 +13,9 @@ public class ApplicationDbContext : DbContext
     // DbSets for entity types
     public DbSet<User> Users => Set<User>();
 
+    // Farmers
+    public DbSet<Farmer> Farmers => Set<Farmer>();
+
     // Example: expose DbSets for other entity types in your Infrastructure layer
     // public DbSet<YourEntity> YourEntities => Set<YourEntity>();
 
