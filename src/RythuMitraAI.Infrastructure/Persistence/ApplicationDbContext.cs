@@ -16,6 +16,9 @@ public class ApplicationDbContext : DbContext
     // Farmers
     public DbSet<Farmer> Farmers => Set<Farmer>();
 
+    // Soils
+    public DbSet<Soil> Soils => Set<Soil>();
+
     // Crops
     public DbSet<Crop> Crops => Set<Crop>();
 
