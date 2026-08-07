@@ -199,87 +199,6 @@ namespace RythuMitraAI.Infrastructure.Migrations
                     b.ToTable("Farmers", (string)null);
                 });
 
-            modelBuilder.Entity("RythuMitraAI.Domain.Entities.Fertilizer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Brand")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("FertilizerCode")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("FertilizerName")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("FertilizerType")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Nitrogen")
-                        .HasPrecision(5, 2)
-                        .HasColumnType("decimal(5,2)");
-
-                    b.Property<decimal>("Phosphorus")
-                        .HasPrecision(5, 2)
-                        .HasColumnType("decimal(5,2)");
-
-                    b.Property<decimal>("Potassium")
-                        .HasPrecision(5, 2)
-                        .HasColumnType("decimal(5,2)");
-
-                    b.Property<string>("RecommendedCrop")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("RecommendedSoil")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FertilizerCode")
-                        .IsUnique();
-
-                    b.HasIndex("FertilizerName");
-
-                    b.HasIndex("FertilizerType");
-
-                    b.ToTable("Fertilizers", (string)null);
-                });
-
             modelBuilder.Entity("RythuMitraAI.Domain.Entities.Soil", b =>
                 {
                     b.Property<Guid>("Id")
@@ -428,6 +347,9 @@ namespace RythuMitraAI.Infrastructure.Migrations
                     b.Property<Guid>("FarmerId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("FarmerId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("Humidity")
                         .HasPrecision(5, 2)
                         .HasColumnType("decimal(5,2)");
@@ -472,6 +394,8 @@ namespace RythuMitraAI.Infrastructure.Migrations
 
                     b.HasIndex("FarmerId");
 
+                    b.HasIndex("FarmerId1");
+
                     b.HasIndex("WeatherCode")
                         .IsUnique();
 
@@ -500,18 +424,17 @@ namespace RythuMitraAI.Infrastructure.Migrations
 
             modelBuilder.Entity("RythuMitraAI.Domain.Entities.Weather", b =>
                 {
-                    b.HasOne("RythuMitraAI.Domain.Entities.Farmer", "Farmer")
-                        .WithMany("Weathers")
+                    b.HasOne("RythuMitraAI.Domain.Entities.Farmer", null)
+                        .WithMany()
                         .HasForeignKey("FarmerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Farmer");
-                });
+                    b.HasOne("RythuMitraAI.Domain.Entities.Farmer", "Farmer")
+                        .WithMany()
+                        .HasForeignKey("FarmerId1");
 
-            modelBuilder.Entity("RythuMitraAI.Domain.Entities.Farmer", b =>
-                {
-                    b.Navigation("Weathers");
+                    b.Navigation("Farmer");
                 });
 #pragma warning restore 612, 618
         }

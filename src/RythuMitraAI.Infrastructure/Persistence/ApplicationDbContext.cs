@@ -22,9 +22,6 @@ public class ApplicationDbContext : DbContext
     // Weathers
     public DbSet<Weather> Weathers => Set<Weather>();
 
-    // Fertilizers
-    public DbSet<Fertilizer> Fertilizers => Set<Fertilizer>();
-
     // Crops
     public DbSet<Crop> Crops => Set<Crop>();
 
