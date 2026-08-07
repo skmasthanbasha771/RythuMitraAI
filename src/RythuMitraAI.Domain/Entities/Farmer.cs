@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using RythuMitraAI.Domain.Common;
 
 namespace RythuMitraAI.Domain.Entities;
@@ -78,6 +79,11 @@ public class Farmer : AuditableEntity
     /// <summary>
     /// Gets or sets the land area owned by the farmer. Optional.
     /// </summary>
+    /// <summary>
+    /// Navigation property to the weather observations for this farmer.
+    /// </summary>
+    public ICollection<Weather> Weathers { get; set; } = new List<Weather>();
+
     public decimal? LandArea { get; set; }
 
     /// <summary>
