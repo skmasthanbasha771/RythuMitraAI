@@ -28,6 +28,9 @@ public class ApplicationDbContext : DbContext
     // Crops
     public DbSet<Crop> Crops => Set<Crop>();
 
+    // Diseases
+    public DbSet<Disease> Diseases => Set<Disease>();
+
     // Example: expose DbSets for other entity types in your Infrastructure layer
     // public DbSet<YourEntity> YourEntities => Set<YourEntity>();
 
