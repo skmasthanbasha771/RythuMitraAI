@@ -18,7 +18,19 @@ var configuration = builder.Configuration;
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(configuration);
 
-// JWT Authentication setup (ready to be configured)
+// CORS configuration for Angular frontend
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
+// JWT Authentication setup
 var jwtSection = configuration.GetSection("Jwt");
 var jwtKey = jwtSection.GetValue<string>("Key") ?? string.Empty;
 if (!string.IsNullOrEmpty(jwtKey))
@@ -26,9 +38,13 @@ if (!string.IsNullOrEmpty(jwtKey))
     var keyBytes = Encoding.UTF8.GetBytes(jwtKey);
     builder.Services.AddAuthentication(options =>
     {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    }).AddJwtBearer(options =>
+        options.DefaultAuthenticateScheme =
+            JwtBearerDefaults.AuthenticationScheme;
+
+        options.DefaultChallengeScheme =
+            JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
     {
         options.RequireHttpsMetadata = false;
         options.SaveToken = true;
@@ -39,7 +55,9 @@ if (!string.IsNullOrEmpty(jwtKey))
             ValidateIssuerSigningKey = true,
             ValidIssuer = jwtSection.GetValue<string>("Issuer"),
             ValidAudience = jwtSection.GetValue<string>("Audience"),
-            IssuerSigningKey = new SymmetricSecurityKey(keyBytes)
+
+            IssuerSigningKey =
+                new SymmetricSecurityKey(keyBytes)
         };
     });
 }
@@ -89,29 +107,41 @@ if (app.Environment.IsDevelopment())
 
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "RythuMitraAI API V1");
+        c.SwaggerEndpoint(
+            "/swagger/v1/swagger.json",
+            "RythuMitraAI API V1");
+
         c.RoutePrefix = string.Empty;
     });
 }
 
+// HTTP/HTTPS middleware
 app.UseHttpsRedirection();
 
+// CORS must be before Authentication and Authorization
+app.UseCors("AllowAngular");
+
+// Authentication
 app.UseAuthentication();
+
+// Authorization
 app.UseAuthorization();
 
+// Controllers
 app.MapControllers();
-
-//app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.Run();
 
-// Minimal GlobalExceptionMiddleware - keep in separate file
+
+// Global Exception Middleware
 public class GlobalExceptionMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly ILogger<GlobalExceptionMiddleware> _logger;
 
-    public GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExceptionMiddleware> logger)
+    public GlobalExceptionMiddleware(
+        RequestDelegate next,
+        ILogger<GlobalExceptionMiddleware> logger)
     {
         _next = next;
         _logger = logger;
@@ -128,7 +158,12 @@ public class GlobalExceptionMiddleware
             _logger.LogError(ex, "Unhandled exception");
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = 500;
-            await httpContext.Response.WriteAsJsonAsync(new { error = "An unexpected error occurred." });
+
+            await httpContext.Response.WriteAsJsonAsync(
+                new
+                {
+                    error = "An unexpected error occurred."
+                });
         }
     }
 }
